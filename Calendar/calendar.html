@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<link rel="stylesheet" type="text/css" href="style.css">
+<body>
 <div class="calendar-container">
+    <link rel="stylesheet" href="style.css">
   <div class="calendar-header">
-    <h1>
+    <h1 id="monthID">
        November
-      <button>▾</button>
     </h1>
-    <p>2018</p>
+    <button type="button" name="button" onclick="clicked()"></button>
+    <script>
+            function clicked(){
+                document.getElementById("monthID").innerHTML = "December";
+            }
+    </script>
+    <p id="yearID">2018</p>
   </div>
-  <div class="calendar"><span class="day-name">Mon</span><span class="day-name">Tue</span><span class="day-name">Wed</span><span class="day-name">Thu</span><span class="day-name">Fri</span><span class="day-name">Sat</span><span class="day-name">Sun</span>
+  <div class="calendar">
+    <span class="day-name">Sun</span><span class="day-name">Mon</span><span class="day-name">Tues</span><span class="day-name">Wed</span><span class="day-name">Thurs</span><span class="day-name">Fri</span><span class="day-name">Sat</span>
     <div class="day day--disabled">30</div>
     <div class="day day--disabled">31</div>
     <div class="day">1</div>
@@ -55,4 +62,4 @@
     <section class="task task--info">Product Checkup 2</section>
   </div>
 </div>
-
+</body>
