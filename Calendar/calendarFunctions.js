@@ -25,4 +25,17 @@ Open ICS file
 */
 function main(){
 
+    var today = new Date();
+    var month = today.getMonth();
+    var year = today.getFullYear();
+
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+    document.getElementById("monthID").innerHTML = monthNames[month];
+    document.getElementById("yearID").innerHTML = year;
+
+
+
 }
