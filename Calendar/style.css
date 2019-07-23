@@ -52,9 +52,10 @@ body {
   letter-spacing: 1px;
   font-size: 12px;
   box-sizing: border-box;
-  color: #98a0a6;
+  color: #404040;
   position: relative;
   pointer-events: none;
+  font-weight: 500;
   z-index: 1;
 }
 .day:nth-of-type(7n + 7) {
@@ -112,21 +113,28 @@ body {
   cursor: not-allowed;
 }
 .task {
+    /* Task text will automatically go down a line when it is too long
+       need to automatically resize font if the box is filled.
+       Doesnt go past 3 lines down, maybe longe if resized
+       TODO: Find a way to detect if the box is filled
+             Find a way to put multiple tasks on the same day
+    */
   border-left-width: 3px;
   padding: 8px 12px;
   margin: 10px;
   border-left-style: solid;
-  font-size: 14px;
+  font-size: 10px;
   position: relative;
 }
 .task--warning {
-  border-left-color: #fdb44d;
-  grid-column: 4 / span 3;
-  grid-row: 3;
-  background: #fef0db;
-  align-self: center;
-  color: #fc9b10;
-  margin-top: -5px;
+    background: #4786ff;
+    border: 0;
+    border-radius: 4px;
+    grid-column: 3 / span 2; /* Column start / column finish */
+    grid-row: 3;
+    align-self: flex-end;
+    color: #fff;
+    box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
 }
 .task--danger {
   border-left-color: #fa607e;
@@ -150,9 +158,9 @@ body {
   background: #4786ff;
   border: 0;
   border-radius: 4px;
-  grid-column: 3 / span 3;
-  grid-row: 4;
-  align-self: end;
+  grid-column: 3 / span 2; /* Column start / column finish */
+  grid-row: 3;
+  align-self: flex-start;
   color: #fff;
   box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
 }
