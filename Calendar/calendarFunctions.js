@@ -1,6 +1,17 @@
-function clicked(){
-    document.getElementById("monthID").innerHTML = "December";
-    document.getElementById("yearID").innerHTML = "2019";
+function setMonth(day){
+    var month = day.getMonth();
+    // Maybe add a monthDays [31, 28, 30...etc]
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
+
+    document.getElementById("monthID").innerHTML = monthNames[month];
+}
+
+function setYear(day){
+
+    var year = day.getFullYear();
+    document.getElementById("yearID").innerHTML = year;
+
 }
 
 
@@ -26,16 +37,21 @@ Open ICS file
 function main(){
 
     var today = new Date();
-    var month = today.getMonth();
-    var year = today.getFullYear();
+    setMonth(today);
+    setYear(today);
 
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+    var lineReader = require('line-reader');
+    var count = 0;
 
-    document.getElementById("monthID").innerHTML = monthNames[month];
-    document.getElementById("yearID").innerHTML = year;
+    lineReader.eachLine('testcalfile.ics', function(line, last) {
+      console.log(line);
+      count++;
 
+      if (last) {
+          //document.getElementById("yearID").innerHTML = line;
 
+        return false; // stop reading
+      }
+    });
 
 }
