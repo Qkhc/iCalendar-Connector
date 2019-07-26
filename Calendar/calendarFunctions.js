@@ -8,12 +8,23 @@ function setMonth(day){
 }
 
 function setYear(day){
-
     var year = day.getFullYear();
     document.getElementById("yearID").innerHTML = year;
-
 }
 
+/*
+*   This function will read the current month and determine 
+*   how the days should be alligned.
+*   i.e In what column/row cell should the first and last of the month be 
+*   as well as all the other days in between.
+*   This should also set the empty cells before and after the first and last
+*   of the month to the appropriate days of the previous and following month.
+*   Example: The first of the month falls on a tuesday, the monday and sunday 
+*   cells should be the last 2 days of the previous month. 
+*/
+function updateCalendarDays(){
+
+}
 
 
 // Main Skeleton
@@ -39,6 +50,7 @@ function main(){
     var today = new Date();
     setMonth(today);
     setYear(today);
+    // updateCalendarDays();
 
     var lineReader = require('line-reader');
     var count = 0;
