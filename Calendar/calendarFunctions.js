@@ -39,10 +39,6 @@ function updateCalendarDays(day){
     var prevMonthDayNum = monthTotalDays[currentMonth-1] - dayLastOfPrevMonth;
     var nextMonthDayNum = 1;
 
-    // if(dayLastOfPrevMonth == 6){
-    //     dayLastOfPrevMonth = -1);
-    // }
-
     for(var row = 0; row < 5; row++){
         for(var col = 0; col < 7; col++){
 
@@ -93,7 +89,7 @@ Open ICS file
 */
 function main(){
 
-    var today = new Date(2019, 8);
+    var today = new Date();
     setMonth(today);
     setYear(today);
     updateCalendarDays(today);
