@@ -93,17 +93,19 @@ function main(){
     setMonth(today);
     setYear(today);
     updateCalendarDays(today);
-
+    var count = 0;
     var lineReader = require('line-reader');
 
-    lineReader.eachLine('testcalfile.ics', function(line, last) {
-      console.log(line);
-
-      if (last) {
-          //document.getElementById("yearID").innerHTML = line;
-
-        return false; // stop reading
-      }
+    lineReader.open('testcalfile.ics', function(err, reader) {
+        if(err) throw error;
+        while(count < 20){
+            if (reader.hasNextLine()) {
+                reader.nextLine(function(err, line) {
+                    if(err) throw error;
+                    console.log(line);
+                    count++;
+                });
+            }
+        }
     });
-
 }
