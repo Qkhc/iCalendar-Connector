@@ -11,6 +11,7 @@ function setYear(day){
     document.getElementById("yearID").innerHTML = year;
 }
 
+
 /*
 *   This function will read the current month and determine
 *   how the days should be alligned.
@@ -88,24 +89,47 @@ Open ICS file
 
 */
 function main(){
+        var today = new Date();
+        setMonth(today);
+        setYear(today);
+        updateCalendarDays(today);
 
-    var today = new Date();
-    setMonth(today);
-    setYear(today);
-    updateCalendarDays(today);
-    var count = 0;
-    var lineReader = require('line-reader');
+        var len = 50;
+        var count = 0;
+        var lineReader = require('line-reader');
 
-    lineReader.open('testcalfile.ics', function(err, reader) {
-        if(err) throw error;
-        while(count < 20){
-            if (reader.hasNextLine()) {
-                reader.nextLine(function(err, line) {
-                    if(err) throw error;
-                    console.log(line);
-                    count++;
-                });
+        document.getElementById('file').onchange = function(){
+
+          var file = this.files[0];
+
+          var reader = new FileReader();
+          reader.onload = function(progressEvent){
+            // Entire file
+            //console.log(this.result);
+
+            // By lines
+            var lines = this.result.split('\n');
+            for(var line = 0; line < lines.length; line++){
+                console.log(lines[line]);
             }
-        }
-    });
+          };
+          reader.readAsText(file);
+        };
+        // lineReader.open('testcalfile.ics', function(err, reader) {
+        //     for(;count !== 177;){
+        //         if(err) throw error;
+        //             if (reader.hasNextLine()) {
+        //                 reader.nextLine(function(err, line) {
+        //                     if(err) throw error;
+        //                     console.log(line);
+        //                     count++;
+        //                 });
+        //             }
+        //             else{
+        //                 reader.close(function(err) {
+        //                     if(err) throw err;
+        //                 });
+        //             }
+        //     }
+        // });
 }
