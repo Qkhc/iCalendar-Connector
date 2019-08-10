@@ -11,6 +11,22 @@ function setYear(day){
     document.getElementById("yearID").innerHTML = year;
 }
 
+function addEvent(event){
+
+    var section = document.createElement("section");
+    section.innerHTML = event.time + " " + event.description;
+    var sectionClass = document.createAttribute("class");
+
+    sectionClass.value = "task task--info";
+    section.setAttributeNode(sectionClass);
+    var sectionStyle = document.createAttribute("style");
+
+    // Will need to change this to be adjustable based on event date
+    sectionStyle.value = "grid-column:6 / span 2; grid-row: 5";
+    section.setAttributeNode(sectionStyle);
+    document.getElementById("calendarLayout").appendChild(section);
+}
+
 
 /*
 *   This function will read the current month and determine
@@ -98,6 +114,15 @@ function main(){
         var count = 0;
         var lineReader = require('line-reader');
 
+        let vevent = {
+            date: "2019 7 13",
+            time: "2PM-3PM",
+            description: "Soccer Game"
+        };
+
+        addEvent(vevent);
+
+
         document.getElementById('file').onchange = function(){
 
           var file = this.files[0];
@@ -115,21 +140,4 @@ function main(){
           };
           reader.readAsText(file);
         };
-        // lineReader.open('testcalfile.ics', function(err, reader) {
-        //     for(;count !== 177;){
-        //         if(err) throw error;
-        //             if (reader.hasNextLine()) {
-        //                 reader.nextLine(function(err, line) {
-        //                     if(err) throw error;
-        //                     console.log(line);
-        //                     count++;
-        //                 });
-        //             }
-        //             else{
-        //                 reader.close(function(err) {
-        //                     if(err) throw err;
-        //                 });
-        //             }
-        //     }
-        // });
 }
