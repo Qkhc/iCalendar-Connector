@@ -17,12 +17,12 @@ function addEvent(event){
     section.innerHTML = event.time + " " + event.description;
     var sectionClass = document.createAttribute("class");
 
-    sectionClass.value = "task task--info";
+    sectionClass.value = "task task--primary";
     section.setAttributeNode(sectionClass);
     var sectionStyle = document.createAttribute("style");
 
     // Will need to change this to be adjustable based on event date
-    sectionStyle.value = "grid-column:6 / span 2; grid-row: 5";
+    sectionStyle.value = "grid-column:3 / span 2; grid-row:4;";
     section.setAttributeNode(sectionStyle);
     document.getElementById("calendarLayout").appendChild(section);
 }
@@ -115,14 +115,24 @@ function main(){
         var lineReader = require('line-reader');
 
         let vevent = {
-            date: "2019 7 13",
-            time: "2PM-3PM",
+            startDate: "20190713T140000",
+            endDate: "20190714T150000",
+            time: "2PM-3PM", //This should just be converted from start/end date
             description: "Soccer Game"
         };
 
         addEvent(vevent);
 
 
+
+        /* while traversing file
+            if find BEGIN:VEVENT
+                create new event
+                loop until find END:VEVENT
+                    parse lines and convert date time etc
+                    add info to event obj
+                addevent()
+        */
         document.getElementById('file').onchange = function(){
 
           var file = this.files[0];
