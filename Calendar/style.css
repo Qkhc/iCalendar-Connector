@@ -132,7 +132,7 @@ body {
     border-radius: 4px;
     grid-column: 3 / span 2; /* Column start / column finish */
     grid-row: 3;
-    align-self: flex-end;
+    align-self: flex-start;
     color: #fff;
     box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
 }
@@ -160,7 +160,7 @@ body {
   border-radius: 4px;
   grid-column: 3 / span 1; /* Column start / column finish */
   grid-row: 3;
-  align-self: flex-start;
+  align-self: flex-end;
   color: #fff;
   box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
 }

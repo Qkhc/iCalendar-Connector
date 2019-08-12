@@ -1,3 +1,12 @@
+// Source https://stackoverflow.com/questions/4313841/insert-a-string-at-a-specific-index
+function insertString(str, index, value) {
+    return str.slice(0, index) + value + str.slice(index);
+}
+
+/*
+    setMonth sets the displayed month of the calendar
+    to the month of the given date
+*/
 function setMonth(day){
     var month = day.getMonth();
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -6,11 +15,52 @@ function setMonth(day){
     document.getElementById("monthID").innerHTML = monthNames[month];
 }
 
+/*
+    setYear sets the displayed year of the calendar
+    to the year of the given date
+*/
 function setYear(day){
     var year = day.getFullYear();
     document.getElementById("yearID").innerHTML = year;
 }
 
+/*
+    Slice time converts the calendar begin and end times to 12 hour times and
+    returns a string of the times
+    Ex. 2:00PM-4:00PM
+*/
+function sliceTime(beginDate, endDate){
+
+    let start = beginDate.slice(9,13);
+    let end = endDate.slice(9,13);
+
+    console.log(start);
+
+    // if Splice does not get a number then it is an all day event.
+    if(start == "" || end == ""){
+        return "All day:";
+    }
+
+    var startTime = parseInt(start, 10);
+    var endTime = parseInt(end, 10);
+
+    var startSuffix = ((startTime >= 1200)? 'PM-' : 'AM-');
+    var endSuffix = ((endTime >= 1200)? 'PM:' : 'AM:');
+
+    startTime = (startTime > 1300 ? startTime - 1200 + "" : startTime + "");
+    endTime = (endTime > 1300 ? endTime - 1200 + "" : endTime + "");
+
+
+    var finalStartTime = (startTime >= 1000 ? insertString(startTime, 2, ":") + startSuffix : insertString(startTime, 1, ":") + startSuffix);
+    var finalEndTime = (endTime >= "1000" ? insertString(endTime, 2, ":") + endSuffix : insertString(endTime, 1, ":") + endSuffix);
+
+    return finalStartTime + finalEndTime;
+
+}
+
+/*
+    Addevent takes as input an event object and inserts it onto the calendar"
+*/
 function addEvent(event){
 
     var section = document.createElement("section");
@@ -46,7 +96,7 @@ function updateCalendarDays(day){
     var firstOfMonth = new Date(currentYear, currentMonth, 1, 1, 1, 1, 1);
     var dayFirstOfMonth = firstOfMonth.getDay(); // Gets the day of the week
 
-    // This will be the first x squares of the calendar (ie last months days)
+    // This will be the first x squares of the calendar (ie previous months months days)
     var lastOfPrevMonth =  new Date(currentYear, currentMonth - 1,
                                 monthTotalDays[currentMonth - 1], 1, 1, 1, 1);
     var dayLastOfPrevMonth =  lastOfPrevMonth.getDay(); // Gets the day of the
@@ -115,12 +165,13 @@ function main(){
         var lineReader = require('line-reader');
 
         let vevent = {
-            startDate: "20190713T140000",
-            endDate: "20190714T150000",
-            time: "2PM-3PM", //This should just be converted from start/end date
+            startDate: "20190713",
+            endDate: "20190714T230000",
+            time: "", //This should just be converted from start/end date
             description: "Soccer Game"
         };
 
+        vevent.time = sliceTime(vevent.startDate, vevent.endDate)
         addEvent(vevent);
 
 
