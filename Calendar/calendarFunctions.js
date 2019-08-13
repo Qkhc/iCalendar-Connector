@@ -52,10 +52,21 @@ function sliceTime(beginDate, endDate){
 
 
     var finalStartTime = (startTime >= 1000 ? insertString(startTime, 2, ":") + startSuffix : insertString(startTime, 1, ":") + startSuffix);
-    var finalEndTime = (endTime >= "1000" ? insertString(endTime, 2, ":") + endSuffix : insertString(endTime, 1, ":") + endSuffix);
+    var finalEndTime = (endTime >= 1000 ? insertString(endTime, 2, ":") + endSuffix : insertString(endTime, 1, ":") + endSuffix);
 
     return finalStartTime + finalEndTime;
 
+}
+
+function sliceDate(date){
+    var year = date.slice(0,4);
+    var month = date.slice(4,6);
+    var day = date.slice(6,8);
+    var hour = date.slice(9,11);
+    var minute = date.slice(11,13);
+    var second = date.slice(13,15);
+
+    return new Date(year, month, day, hour, minute, second, 1);
 }
 
 /*
@@ -71,8 +82,15 @@ function addEvent(event){
     section.setAttributeNode(sectionClass);
     var sectionStyle = document.createAttribute("style");
 
+
+    var day = event.beginDate.getDay() + 1;
+    var firstWeekday = new Date(event.beginDate.getFullYear(), event.beginDate.getMonth(), 1).getDay();
+    var offsetDate = event.beginDate.getDate() + firstWeekday - 1;
+    var weekOfMonth  = Math.floor(offsetDate / 7);
+    console.log(weekOfMonth);
+
     // Will need to change this to be adjustable based on event date
-    sectionStyle.value = "grid-column:3 / span 2; grid-row:4;";
+    sectionStyle.value = `grid-column:${day} / span 2; grid-row:${weekOfMonth + 2};`;
     section.setAttributeNode(sectionStyle);
     document.getElementById("calendarLayout").appendChild(section);
 }
@@ -165,13 +183,18 @@ function main(){
         var lineReader = require('line-reader');
 
         let vevent = {
-            startDate: "20190713",
-            endDate: "20190714T230000",
+            startDate: "20190714T143030",
+            endDate: "20190714T153030",
             time: "", //This should just be converted from start/end date
-            description: "Soccer Game"
+            description: "Soccer Game",
+            beginDate: "",
+            finalDate: ""
         };
 
         vevent.time = sliceTime(vevent.startDate, vevent.endDate)
+        vevent.beginDate = sliceDate(vevent.startDate);
+        vevent.finalDate = sliceDate(vevent.endDate);
+
         addEvent(vevent);
 
 
