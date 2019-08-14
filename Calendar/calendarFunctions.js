@@ -74,20 +74,23 @@ function sliceDate(date){
 */
 function addEvent(event){
 
+    var today = new Date();
+    if(event.beginDate.getMonth() !== today.getMonth()){
+        return false;
+    }
+
     var section = document.createElement("section");
     section.innerHTML = event.time + " " + event.description;
     var sectionClass = document.createAttribute("class");
 
-    sectionClass.value = "task task--primary";
+    sectionClass.value = "task task--info";
     section.setAttributeNode(sectionClass);
     var sectionStyle = document.createAttribute("style");
-
 
     var day = event.beginDate.getDay() + 1;
     var firstWeekday = new Date(event.beginDate.getFullYear(), event.beginDate.getMonth(), 1).getDay();
     var offsetDate = event.beginDate.getDate() + firstWeekday - 1;
     var weekOfMonth  = Math.floor(offsetDate / 7);
-    console.log(weekOfMonth);
 
     // Will need to change this to be adjustable based on event date
     sectionStyle.value = `grid-column:${day} / span 2; grid-row:${weekOfMonth + 2};`;
@@ -111,12 +114,12 @@ function updateCalendarDays(day){
     var currentMonth = day.getMonth();
     var currentYear = day.getFullYear();
 
-    var firstOfMonth = new Date(currentYear, currentMonth, 1, 1, 1, 1, 1);
+    var firstOfMonth = new Date(currentYear, currentMonth);
     var dayFirstOfMonth = firstOfMonth.getDay(); // Gets the day of the week
 
     // This will be the first x squares of the calendar (ie previous months months days)
     var lastOfPrevMonth =  new Date(currentYear, currentMonth - 1,
-                                monthTotalDays[currentMonth - 1], 1, 1, 1, 1);
+                                monthTotalDays[currentMonth - 1]);
     var dayLastOfPrevMonth =  lastOfPrevMonth.getDay(); // Gets the day of the
                                                        // week of the last day
                                                        // of the previous month
