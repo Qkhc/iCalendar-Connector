@@ -34,8 +34,6 @@ function sliceTime(beginDate, endDate){
     let start = beginDate.slice(9,13);
     let end = endDate.slice(9,13);
 
-    console.log(start);
-
     // if Splice does not get a number then it is an all day event.
     if(start == "" || end == ""){
         return "All day:";
@@ -58,6 +56,8 @@ function sliceTime(beginDate, endDate){
 
 }
 
+// Maybe just use this and edit sliceTime to use this date format instead
+// Would probably be much cleaner
 function sliceDate(date){
     var year = date.slice(0,4);
     var month = date.slice(4,6);
@@ -194,11 +194,11 @@ function main(){
             finalDate: ""
         };
 
-        vevent.time = sliceTime(vevent.startDate, vevent.endDate)
-        vevent.beginDate = sliceDate(vevent.startDate);
-        vevent.finalDate = sliceDate(vevent.endDate);
-
-        addEvent(vevent);
+        // vevent.time = sliceTime(vevent.startDate, vevent.endDate)
+        // vevent.beginDate = sliceDate(vevent.startDate);
+        // vevent.finalDate = sliceDate(vevent.endDate);
+        //
+        // addEvent(vevent);
 
 
 
@@ -212,17 +212,47 @@ function main(){
         */
         document.getElementById('file').onchange = function(){
 
-          var file = this.files[0];
+            var file = this.files[0];
 
-          var reader = new FileReader();
-          reader.onload = function(progressEvent){
-            // Entire file
-            //console.log(this.result);
+            var reader = new FileReader();
+            reader.onload = function(progressEvent){
 
-            // By lines
-            var lines = this.result.split('\n');
-            for(var line = 0; line < lines.length; line++){
-                console.log(lines[line]);
+                var lines = this.result.split('\n');
+                for(var line = 0; line < lines.length; line++){
+                    var lineS = lines[line].trim();
+                    var beginEvent = "BEGIN:VEVENT";
+                    if(lines[line].trim() == beginEvent){
+                        let vevent = {
+                            startDate: "",
+                            endDate: "",
+                            time: "", //This should just be converted from start/end date
+                            description: "",
+                            beginDate: "",
+                            finalDate: ""
+                        };
+                        line++;
+                        while(lines[line].trim() !== "END:VEVENT"){
+                            var str = lines[line].trim();
+                            if(str.includes("DTEND")){
+                                console.log(str.slice(31));
+                                vevent.endDate = str.slice(31);
+                            }
+                            else if(str.includes("DTSTART")){
+                                console.log(str.slice(33));
+                                vevent.startDate = str.slice(33);
+                            }
+                            else if(str.includes("SUMMARY")){
+                                console.log(str.slice(8));
+                                vevent.description = str.slice(8);
+                            }
+                            line++;
+                        }
+                        vevent.time = sliceTime(vevent.startDate, vevent.endDate)
+                        vevent.beginDate = sliceDate(vevent.startDate);
+                        vevent.finalDate = sliceDate(vevent.endDate);
+                        addEvent(vevent);
+                    }
+
             }
           };
           reader.readAsText(file);
