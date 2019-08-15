@@ -45,8 +45,8 @@ function sliceTime(beginDate, endDate){
     var startSuffix = ((startTime >= 1200)? 'PM-' : 'AM-');
     var endSuffix = ((endTime >= 1200)? 'PM:' : 'AM:');
 
-    startTime = (startTime > 1300 ? startTime - 1200 + "" : startTime + "");
-    endTime = (endTime > 1300 ? endTime - 1200 + "" : endTime + "");
+    startTime = (startTime >= 1300 ? startTime - 1200 + "" : startTime + "");
+    endTime = (endTime >= 1300 ? endTime - 1200 + "" : endTime + "");
 
 
     var finalStartTime = (startTime >= 1000 ? insertString(startTime, 2, ":") + startSuffix : insertString(startTime, 1, ":") + startSuffix);
@@ -60,7 +60,7 @@ function sliceTime(beginDate, endDate){
 // Would probably be much cleaner
 function sliceDate(date){
     var year = date.slice(0,4);
-    var month = date.slice(4,6);
+    var month = date.slice(4,6) -1 ;
     var day = date.slice(6,8);
     var hour = date.slice(9,11);
     var minute = date.slice(11,13);
@@ -92,8 +92,13 @@ function addEvent(event){
     var offsetDate = event.beginDate.getDate() + firstWeekday - 1;
     var weekOfMonth  = Math.floor(offsetDate / 7);
 
+    var firstDay = event.beginDate.getDay();
+    var lastDay = event.finalDate.getDay();
+
+    var dayDifference = (lastDay - firstDay) + 1;
+
     // Will need to change this to be adjustable based on event date
-    sectionStyle.value = `grid-column:${day} / span 2; grid-row:${weekOfMonth + 2};`;
+    sectionStyle.value = `grid-column:${day} / span ${dayDifference}; grid-row:${weekOfMonth + 2};`;
     section.setAttributeNode(sectionStyle);
     document.getElementById("calendarLayout").appendChild(section);
 }
