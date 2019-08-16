@@ -96,9 +96,14 @@ function addEvent(event){
     var weekOfMonth  = getWeek(event.beginDate);
     var weekOfMonthEnd = getWeek(event.finalDate);
 
+    // Multi Week events
     if(weekOfMonth !== weekOfMonthEnd){
 
 
+        // Because javascript passes objects by reference
+        // we need to first change the start date to the upcoming sunday
+        // then set it back to the original day
+        // then set the final date to the upcoming saturday.
         var dayDiff = 6 - event.beginDate.getDay();
 
         event.beginDate.setDate(event.beginDate.getDate() + dayDiff + 1);
@@ -106,7 +111,6 @@ function addEvent(event){
         addEvent(event);
         event.beginDate.setDate(event.beginDate.getDate() - dayDiff - 1);
         event.finalDate.setDate(event.beginDate.getDate() + dayDiff);
-        //change current event end date to saturday of that week
 
         addEvent(event);
         return true;
