@@ -24,6 +24,12 @@ function setYear(day){
     document.getElementById("yearID").innerHTML = year;
 }
 
+function getWeek(date){
+    var firstWeekday = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+    var offsetDate = date.getDate() + firstWeekday - 1;
+    return Math.floor(offsetDate / 7);
+}
+
 /*
     Slice time converts the calendar begin and end times to 12 hour times and
     returns a string of the times
@@ -66,7 +72,7 @@ function sliceDate(date){
     var minute = date.slice(11,13);
     var second = date.slice(13,15);
 
-    return new Date(year, month, day, hour, minute, second, 1);
+    return new Date(year, month, day, hour, minute, second);
 }
 
 /*
@@ -87,18 +93,32 @@ function addEvent(event){
     section.setAttributeNode(sectionClass);
     var sectionStyle = document.createAttribute("style");
 
-    var day = event.beginDate.getDay() + 1;
-    var firstWeekday = new Date(event.beginDate.getFullYear(), event.beginDate.getMonth(), 1).getDay();
-    var offsetDate = event.beginDate.getDate() + firstWeekday - 1;
-    var weekOfMonth  = Math.floor(offsetDate / 7);
+    var weekOfMonth  = getWeek(event.beginDate);
+    var weekOfMonthEnd = getWeek(event.finalDate);
 
-    var firstDay = event.beginDate.getDay();
+    if(weekOfMonth !== weekOfMonthEnd){
+
+
+        var dayDiff = 6 - event.beginDate.getDay();
+
+        event.beginDate.setDate(event.beginDate.getDate() + dayDiff + 1);
+
+        addEvent(event);
+        event.beginDate.setDate(event.beginDate.getDate() - dayDiff - 1);
+        event.finalDate.setDate(event.beginDate.getDate() + dayDiff);
+        //change current event end date to saturday of that week
+
+        addEvent(event);
+        return true;
+    }
+
+    var day = event.beginDate.getDay();
     var lastDay = event.finalDate.getDay();
 
-    var dayDifference = (lastDay - firstDay) + 1;
+    var dayDifference = (lastDay - day) + 1;
 
     // Will need to change this to be adjustable based on event date
-    sectionStyle.value = `grid-column:${day} / span ${dayDifference}; grid-row:${weekOfMonth + 2};`;
+    sectionStyle.value = `grid-column:${day + 1} / span ${dayDifference}; grid-row:${weekOfMonth + 2};`;
     section.setAttributeNode(sectionStyle);
     document.getElementById("calendarLayout").appendChild(section);
 }
@@ -190,23 +210,6 @@ function main(){
         var count = 0;
         var lineReader = require('line-reader');
 
-        let vevent = {
-            startDate: "20190714T143030",
-            endDate: "20190714T153030",
-            time: "", //This should just be converted from start/end date
-            description: "Soccer Game",
-            beginDate: "",
-            finalDate: ""
-        };
-
-        // vevent.time = sliceTime(vevent.startDate, vevent.endDate)
-        // vevent.beginDate = sliceDate(vevent.startDate);
-        // vevent.finalDate = sliceDate(vevent.endDate);
-        //
-        // addEvent(vevent);
-
-
-
         /* while traversing file
             if find BEGIN:VEVENT
                 create new event
@@ -263,3 +266,20 @@ function main(){
           reader.readAsText(file);
         };
 }
+
+
+// if day == sunday and length > 1
+// recreate event with new startDate
+
+/*
+if startDay > endDay
+add first event with correct start day
+make duplicate new event with new start day and add event
+
+do getWeek if weeks are different then startday span 7
+0 span endDay
+
+*/
+
+// TODO: Repeat events
+//       Events that go into the next week.
